@@ -25,7 +25,7 @@ reinstall:
 		python3 -m pip install --user dist/*.whl
 
 lint:
-		poetry run flake8
+		poetry run flake8 gendiff
 
 say-hello:
 		echo 'Hello, World!'
