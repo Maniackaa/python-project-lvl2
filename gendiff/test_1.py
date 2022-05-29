@@ -1,9 +1,8 @@
-from gendiff.generate_diff import generate_diff
+from .generate_diff import generate_diff
 
 
 def test_answer():
-    a = {'host': 'hexlet.io', 'timeout': 50,
-         'proxy': '123.234.53.22', 'follow': False}
+    a = {'host': 'hexlet.io', 'timeout': 50, 'proxy': '123.234.53.22', 'follow': False}
     b = {'timeout': 20, 'verbose': True, 'host': 'hexlet.io'}
 
     result = generate_diff(a, b)
