@@ -38,4 +38,4 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: 0ad30785c211f4a17f308edbb4d6179b562ea25368add736a6325bf48024efe9
       with:
-        coverageCommand: make coverage
+        coverageCommand: poetry run pytest --cov=gendiff --cov-report xml tests/
