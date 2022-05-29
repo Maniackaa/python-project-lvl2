@@ -34,3 +34,6 @@ upload:
 		git add .
 		git commit -m 'fix'
 		git push
+
+coverage:
+		poetry run pytest --cov=gendiff --cov-report xml tests/
