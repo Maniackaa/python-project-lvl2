@@ -1,41 +1,19 @@
-name: build
-on:
-  push:
-    branches:
-      - '**'
-    tags:
-      - '**' # Do not execute on tags
+name: code_climate
+on: [push]
 jobs:
-  test:
-    strategy:
-      matrix:
-        platform: [ ubuntu-latest ]
-        node: [ '20' ]
-    name: test/node ${{ matrix.node }}/${{ matrix.platform }}
-    runs-on: ${{ matrix.platform }}
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@master
-      with:
-        node-version: ${{ matrix.node }}
-    - run: npm install -g yarn
-    - run: yarn install
-    - run: yarn build
-    - run: yarn test
-  coverage:
-    needs: [ test ]
-    name: coverage
+  check_cov:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: '12'
-    - run: npm install -g yarn
-    - run: yarn install
-    - run: yarn build
-    - uses: paambaati/codeclimate-action@v2.2.4
-      env:
-        CC_TEST_REPORTER_ID: 0ad30785c211f4a17f308edbb4d6179b562ea25368add736a6325bf48024efe9
-      with:
-        coverageCommand: pytest --cov=gendiff --cov-report xml tests/
+      - name: Check coverage
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          make install
+        name: Run test & publish code coverage
+        uses: paambaati/codeclimate-action@v2.2.4
+        env:
+          CC_TEST_REPORTER_ID: 0ad30785c211f4a17f308edbb4d6179b562ea25368add736a6325bf48024efe9
+        with:
+          coverageCommand: make coverage
+          coverageLocations: ${{github.workplace}}/coverage.xml
