@@ -1,6 +1,6 @@
 def generate_diff(a, b):
-    old_keys = set(a.keys())
-    new_keys = set(b.keys())
+    old_keys = set(a)
+    new_keys = set(b)
     # added — ключ отсутствовал в первом словаре, но был добавлен во второй
     added = new_keys - old_keys
 
@@ -23,7 +23,22 @@ def generate_diff(a, b):
         if a[i] == b[i]:
             unchanged.add(i)
 
+    return {'unchanged': unchanged, 'added': added, 'changed': changed, 'deleted': deleted}
+
+a = (1, 2, 3)
+
+
+b = (2, 3, 4)
+
+print(a)
+print(b)
+diff_keys = (generate_diff(a, b))
+print(diff_keys)
+for i in diff_keys:
+    print(i)
+
     # формируем отличия:
+def otl(unchanged, added, changed, deleted):
     all_keys = sorted(old_keys | new_keys)
     diff = {}
     for i in all_keys:
@@ -38,11 +53,9 @@ def generate_diff(a, b):
         elif i in added:
             diff[i] = {'attrib': 'added', 'new_value': b[i]}
 
-    return make_json(diff)
-
 
 def make_json(d):
-    tab = '  '
+    tab = ' '
     # diff_json = {}
     stroke = '{\n'
 
@@ -53,14 +66,14 @@ def make_json(d):
 
         if d[i]['attrib'] == 'changed':
             add1 = f"- {i}: {d[i]['old_value']}"
-            add = add1 + '\n' + tab + f"+ {i}: {d[i]['new_value']}"
+            add = add1 + ',\n' + tab + f"+ {i}: {d[i]['new_value']}"
 
         if d[i]['attrib'] == 'deleted':
             add = f"- {i}: {d[i]['old_value']}"
 
         if d[i]['attrib'] == 'added':
             add = f"+ {i}: {d[i]['new_value']}"
-        stroke += tab + add + '\n'
+        stroke += tab + add + ',\n'
 
-    stroke = stroke[:-1] + '\n}'
+    stroke = stroke[:-2] + '\n}'
     return stroke
